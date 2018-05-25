@@ -61,8 +61,10 @@
         :toggle="true"></flat-button>
       <div class="tweets-body-content">
         <ul class="images" v-if="isImageList">
-          <li v-for="item in data.pics" @click="_emitTargetInfo($event)">
-            <img v-lazy="item.url" :alt="item.index" :index="item.index">
+          <li v-for="item in data.pics" class="needsclick">
+            <v-touch v-on:tap="_emitTargetInfo($event)">
+              <img v-lazy="item.url" :alt="item.index" :index="item.index" class="needsclick">
+            </v-touch>
           </li>
         </ul>
         <div class="video" v-if="isVideo">

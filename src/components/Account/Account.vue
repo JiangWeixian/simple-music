@@ -5,7 +5,9 @@
         <p>账号</p>
       </div>
     </div>
-    <scroll class="account-content">
+    <scroll
+      :click="true"
+      class="account-content">
       <div>
         <section class="account-info-card">
           <router-view></router-view>

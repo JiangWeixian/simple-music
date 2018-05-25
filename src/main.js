@@ -29,7 +29,6 @@ VueTouch.registerCustomEvent('tripletap', {
   interval: 200,
   taps: 3
 })
-Vue.use(VueTouch)
 Vue.use(VueTouch, {name: 'v-touch'})
 
 Vue.use(VueLazyload, {
