@@ -11,7 +11,9 @@
         <div class="nav-tail blank"></div>
       </div>
     </div>
-    <scroll class="followers-content">
+    <scroll
+      :click="true"
+      class="followers-content">
       <div>
         <img-collect-item
           v-for="item in followerData"

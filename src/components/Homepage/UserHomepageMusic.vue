@@ -29,7 +29,6 @@
         item-type="musiclist">
       </li>
     </section>
-    <div class="blank"></div>
   </div>
 </template>
 

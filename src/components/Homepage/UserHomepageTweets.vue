@@ -21,7 +21,6 @@
           :key="item.tweetsTime"
           :data="item">
       </li>
-      <div class="blank"></div>
     </div>
   </div>
 </template>

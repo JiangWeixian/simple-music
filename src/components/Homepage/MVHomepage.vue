@@ -2,7 +2,7 @@
   <div class="mv-homepage">
     <div class="mv-homepage-header nav-panel-wrapper">
       <div class="nav-panel">
-        <span class="nav-header action-backward">
+        <span class="nav-header action-backward" @click="_backward">
           <i class="material-icons md-56 md-light">keyboard_arrow_left</i>
         </span>
         <div class="nav-body panel">
@@ -19,7 +19,7 @@
         :poster-src="mvInfo.cover">
       </video-pre-viewer>
     </div>
-    <ul class="mvh-actions" :style="mvhAStyle" ref="mvhActions">
+    <ul class="mvh-actions" v-show="isShowActions" :style="mvhAStyle">
       <li class="mvh-mv-suggestions-btn" @click="_scrollTo(isMv, 'mvSuggestion')">
         <i class="material-icons md-48">ondemand_video</i>
         <span>{{ simiMVInfo.length }}</span>
@@ -38,6 +38,7 @@
         :probeType="3"
         :scrollToPosY="scrollToPosY"
         :listenScroll="isListenScroll"
+        :click="true"
         ref="scroll"
         @scroll="_getCurrentPos"
         class="mv-content">
@@ -73,6 +74,20 @@
           </ul>
           <p class="mv-desc" v-show="isMore">{{ mvInfo.desc }}</p>
         </div>
+        <ul class="mvh-actions" ref="mvhActions">
+          <li class="mvh-mv-suggestions-btn" @click="_scrollTo(isMv, 'mvSuggestion')">
+            <i class="material-icons md-48">ondemand_video</i>
+            <span>{{ simiMVInfo.length }}</span>
+          </li>
+          <li class="mvh-music-suggestions-btn" @click="_scrollTo(isSong, 'songSuggestion')">
+            <i class="material-icons md-48">music_note</i>
+            <span>{{ songsCount }}</span>
+          </li>
+          <li class="mvh-commit-btn" @click="_scrollTo(isComment, 'comments')">
+            <i class="material-icons md-48">chat</i>
+            <span>{{ totalCommentCount | roundOht }}</span>
+          </li>
+        </ul>
         <div class="mv-suggestions" v-show="isMv" ref="mvSuggestion">
           <div class="panel">
             <p>相似MV</p>
@@ -139,6 +154,7 @@
     data() {
       return {
         name: 'MVHomepage',
+        fromPath: '/',
         isMore: false,
         videoType: 'video/mp4',
         isListenScroll: true,
@@ -151,8 +167,7 @@
             noMore: '没有更多数据'
           }
         },
-        mvPanelHeight: 135,
-        mvWrapperHeight: 210,
+        mvWrapperHeight: 125,
         mvWrapperWidth: 375,
         mvInfo: {},
         simiMVInfo: [
@@ -253,6 +268,7 @@
     },
     watch: {
       '$route'(to, from) {
+        this.fromPath = from.path
         if (this._filter(to)) {
           let vid = to.query['vid']
             ,sid = to.query['sid']
@@ -289,22 +305,20 @@
       isComment() {
         return !!this.comments.length
       },
+      isShowActions() {
+        return -this.scrollY > this.mvPanelHeight? true:false
+      },
       songsCount() {
         return this.isSong? 1:0
       },
+      mvPanelHeight() {
+        return (135/375)*this.mvWrapperWidth
+      },
       mvhAStyle() {
-        if (-this.scrollY > this.mvPanelHeight) {
-          return {
-            position: 'absolute',
-            zIndex: 3,
-            top: `${this.mvWrapperHeight - 1}px`,
-            left: 0
-          }
-        }
         return {
           position: 'absolute',
           zIndex: 3,
-          top: `${this.scrollY + this.mvPanelHeight + this.mvWrapperHeight}px`,
+          top: `${this.mvWrapperHeight - 1}px`,
           left: 0
         }
       },
@@ -333,13 +347,10 @@
         }
       }
     },
-    mounted() {
-      this.$nextTick(() => {
-        // this.mvPanelHeight = this.$refs.mvPanel.offsetHeight
-        // this.mvWrapperHeight = this.$refs.mvWrapper.offsetHeight
-      })
-    },
     methods: {
+      _backward() {
+        this.$router.push({ path: this.fromPath, query: {transition: 'slide-left'}})
+      },
       _toggleDesc() {
         this.isMore = !this.isMore
         this.$nextTick(() => {

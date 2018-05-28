@@ -25,6 +25,7 @@
       @clickit="_previewImg">
     </img-pre-viewer>
     <scroll
+      :click="true"
       class="personal-tweets-content"
       @getCurrentY="_getCurrentY"
       :listen-scroll="true">

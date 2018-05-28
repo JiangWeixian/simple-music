@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div class="homepage-routerlink" :style="routerStyle" ref="links">
+    <div class="homepage-routerlink" v-show="isShowLinks" :style="routerStyle">
       <router-link class="tab-item" tag="div" :to="musicPath">
         <span class="tab-link">音乐</span>
         <span>{{ userInfo.userPlayListNum }}</span>
@@ -34,6 +34,7 @@
         :probeType="3"
         :listenScroll="isListenScroll"
         :isEndScroll="isEndScroll"
+        :click="true"
         @scroll="_getCurrentPos"
         class="user-homepage-content">
         <section class="homepage-accountInfo" ref="account">
@@ -57,11 +58,21 @@
               </li>
             </ul>
             <div class="row account-signature">
-              <p>{{ userInfo.userSignature }}</p>
+              <p class="ellipsis">{{ userInfo.userSignature }}</p>
             </div>
           </div>
         </section>
-        <section class="homepage-user-subcount" :style="subcountStyle" ref="subcount">
+        <section class="homepage-routerlink" ref="links">
+          <router-link class="tab-item" tag="div" :to="musicPath">
+            <span class="tab-link">音乐</span>
+            <span>{{ userInfo.userPlayListNum }}</span>
+          </router-link>
+          <router-link class="tab-item" tag="div" :to="tweetsPath">
+            <span class="tab-link">动态</span>
+            <span>{{ userInfo.userTweetsNum }}</span>
+          </router-link>
+        </section>
+        <section class="homepage-user-subcount" ref="subcount">
           <div class="homepage-cards">
             <keep-alive>
               <router-view
@@ -73,6 +84,7 @@
             </keep-alive>
           </div>
         </section>
+        <div class="blank"></div>
       </scroll>
     </div>
   </div>
@@ -142,22 +154,10 @@
     },
     computed: {
       routerStyle() {
-        let top = 400
-        if (this.scrollY < -this.maxScrollY) {
-          top = this.navHeight
-        }
-        else {
-          top = this.scrollY+this.maxScrollY + this.navHeight
-        }
         return {
           position: 'fixed',
           zIndex: 1,
-          top: `${top}px`
-        }
-      },
-      subcountStyle() {
-        return {
-          paddingTop: `${this.linksHeight}px`
+          top: `${this.navHeight}px`
         }
       },
       musicPath() {
@@ -171,6 +171,9 @@
       },
       isCover() {
         return this.scrollY < 0? true:false
+      },
+      isShowLinks() {
+        return -this.scrollY > this.maxScrollY? true:false
       }
     },
     mounted() {
@@ -215,7 +218,7 @@
         .then((res) => {
           this._formatUserInfo(res.data)
         })
-        this.screenHeight = document.documentElement.offsetHeight || document.body.offsetHeight
+      this.screenHeight = document.documentElement.offsetHeight || document.body.offsetHeight
     }
 }
 </script>

@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div class="homepage-routerlink" ref="links" :style="routerStyle">
+    <div class="homepage-routerlink" v-show="isShowLinks" :style="routerStyle">
       <router-link class="tab-item" tag="div" :to="hotSongsPath">
         <span class="tab-link">热门</span>
         <span>{{ hotSongs.length }}</span>
@@ -41,6 +41,7 @@
       <scroll
         :probeType="3"
         :listenScroll="isListenScroll"
+        :click="true"
         @scroll="_getCurrentPos"
         class="singer-homepage-content">
         <section class="homepage-singer" ref="singer">
@@ -53,6 +54,24 @@
             :button-status="singerInfo.followed"
             secondary-color="white">
           </main-button>
+        </section>
+        <section class="homepage-routerlink" ref="links">
+          <router-link class="tab-item" tag="div" :to="hotSongsPath">
+            <span class="tab-link">热门</span>
+            <span>{{ hotSongs.length }}</span>
+          </router-link>
+          <router-link class="tab-item" tag="div" :to="albumsPath">
+            <span class="tab-link">专辑</span>
+            <span>{{ singerInfo.albumSize }}</span>
+          </router-link>
+          <router-link class="tab-item" tag="div" :to="mvsPath">
+            <span class="tab-link">MV</span>
+            <span>{{ singerInfo.mvSize }}</span>
+          </router-link>
+          <router-link class="tab-item" tag="div" :to="infoPath">
+            <span class="tab-link">歌手信息</span>
+            <span></span>
+          </router-link>
         </section>
         <section class="homepage-singer-info" ref="info">
           <div class="homepage-cards">
@@ -152,18 +171,14 @@
     },
     computed: {
       routerStyle() {
-        let top = 400
-        if (this.scrollY < -this.maxScrollY) {
-          top = this.navHeight
-        }
-        else {
-          top = this.scrollY + this.maxScrollY + this.navHeight
-        }
         return {
           position: 'fixed',
           zIndex: 1,
-          top: `${top}px`
+          top: `${this.navHeight}px`
         }
+      },
+      isShowLinks() {
+        return -this.scrollY > this.maxScrollY? true:false
       },
       isCover() {
         return this.scrollY < 0? true:false
