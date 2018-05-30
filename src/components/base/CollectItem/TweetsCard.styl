@@ -1,10 +1,10 @@
 @import "~assets/stylus/variable.styl"
 
 .card
-.tweets-card
   width: 100%
   background-color: white
   position: relative
+  margin-bottom 20px
   .tweets-header
     display: flex
     width: inherit
@@ -23,9 +23,6 @@
         height: 92px
         border-radius: 100%
         overflow: hidden
-        img
-          width: inherit
-          object-fit: fill
     .tweets-header-brief
       width: 448px
       height: 140px
@@ -42,6 +39,97 @@
         display: block
         height: 50px
         line-height 50px
+  .tweets-body, .tweets-tail
+    width: 100%
+    padding: 0 24px 0 140px
+    box-sizing: border-box
+  .tweets-body
+    .tweets-body-brief
+      font-size: $font-size-large-xxxl
+      line-height: 42px
+      margin-bottom: 24px
+      overflow: hidden
+      position: relative
+    .tweets-body-content
+      width 586px
+  .tweets-tail
+    display: flex
+    justify-content: space-between
+    .tweets-actions
+      display: flex
+      .tweets-action
+        width: 120px
+        height: 114px
+        line-height: 114px
+        display: flex
+        align-items: center
+        .material-icons
+          height: inherit
+          line-height: inherit
+        span
+          font-size: $font-size-large-xx
+          text-indent: 8px
+    .tweets-api
+      height: 114px
+      line-height 114px
+      .material-icons
+        height: inherit
+        line-height: inherit
+
+.loading-tweets-card
+  .tweets-header
+    .tweets-account-avatar
+      .img
+        background-color $color-background
+    .tweets-header-brief
+      .tweets-account-name
+      .tweets-time
+        background-color $color-background
+      .tweets-account-name
+        width 50%
+        height $font-size-large-xxxl
+        border-top 7px solid white
+        border-bottom 7px solid white
+      .tweets-time
+        height $font-size-large-xx
+        border-top 13px solid white
+        border-bottom 13px solid white
+  .tweets-body
+    .tweets-body-brief
+      background-color $color-background
+      height 110px
+    .tweets-body-content
+      height calc(586px/3)
+      background-color $color-background
+  .tweets-tail
+    .tweets-actions
+      .tweets-action
+        i
+        span
+          height 36px
+          background-color $color-background
+        i
+          width 36px
+        span
+          display inline-block
+          width $font-size-large-xx
+          margin-left: 8px
+    .tweets-api
+      display flex
+      align-items center
+      span
+        display inline-block
+        width 36px
+        height 36px
+        background-color $color-background
+
+.tweets-card
+  .tweets-header
+    .tweets-account-avatar
+      .img
+        img
+          width: inherit
+          object-fit: fill
     .tweets-actions
       width: 140px
       box-sizing: border-box
@@ -76,17 +164,8 @@
           height: 96px
           span
             text-indent: 10px
-  .tweets-body, .tweets-tail
-    width: 100%
-    padding: 0 24px 0 140px
-    box-sizing: border-box
   .tweets-body
     .tweets-body-brief
-      font-size: $font-size-large-xxxl
-      line-height: 42px
-      margin-bottom: 24px
-      overflow: hidden
-      position: relative
       .act
         color: #2d9cf2
     .tweets-body-brief.more
@@ -120,28 +199,13 @@
     display: flex
     justify-content: space-between
     .tweets-actions
-      display: flex
       .tweets-action
-        width: 120px
-        height: 114px
-        line-height: 114px
-        display: flex
-        align-items: center
         .material-icons
-          height: inherit
-          line-height: inherit
           color: $color-icon
         .material-icons.active
           color: $color-theme-primary
-        span
-          font-size: $font-size-large-xx
-          text-indent: 8px
     .tweets-api
-      height: 114px
-      line-height 114px
       .material-icons
-        height: inherit
-        line-height: inherit
         color: $color-icon
       .material-icons.active
         color: $color-theme-primary

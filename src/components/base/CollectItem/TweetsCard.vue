@@ -145,7 +145,7 @@
         data: {
           type: Object,
           required: true
-        }
+        },
       },
       computed: {
         isImageList() {

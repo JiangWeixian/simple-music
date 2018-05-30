@@ -16,13 +16,22 @@
     <scroll
       class="push-tweets-content"
       @getCurrentY="_getCurrentY"
+      :click="true"
       :listen-scroll="true">
-      <li v-for="item in pushTweets"
-          is="TweetsCard"
-          @getTargetInfo="_getTargetInfo"
-          :key="item.tweetsTime"
-          :data="item">
-      </li>
+      <div class="pushtweets" v-if="!isLoading">
+        <li v-for="item in pushTweets"
+            is="TweetsCard"
+            @getTargetInfo="_getTargetInfo"
+            :key="item.tweetsTime"
+            :data="item">
+        </li>
+      </div>
+      <div class="loading" v-if="isLoading">
+        <li v-for="item in pushTweets"
+            is="LoadingTweetsCard"
+            :key="item.tweetsTime">
+        </li>
+      </div>
       <div class="blank"></div>
     </scroll>
   </div>
@@ -31,9 +40,9 @@
 <script>
   import ImgPreViewer from "../base/Viewer/ImgPreViewer";
   import InfCircleLoader from "../base/Loader/InfCircleLoader";
+  import LoadingTweetsCard from "../base/CollectItem/LoadingTweetsCard"
   import TweetsCard from "../base/CollectItem/TweetsCard";
   import Scroll from "../base/Scroll/Scroll";
-  import login from '../../api/login'
   import tweets from '../../api/tweets'
   import song from '../../api/song'
   import { mapGetters } from 'vuex'
@@ -41,6 +50,7 @@
   export default {
     components: {
       Scroll,
+      LoadingTweetsCard,
       TweetsCard,
       InfCircleLoader,
       ImgPreViewer},
@@ -48,10 +58,11 @@
     data() {
       return {
         show: false,
+        isLoading: true,
         screenWidth: 0,
         screenHeight: 0,
         scrollY: 0,
-        pushTweets: [],
+        pushTweets: [1,2],
         currentMidLineX: 0,
         currentMidLineY: 0,
         currentImgScale: 0.5,
@@ -319,6 +330,7 @@
           }
         })
         this.pushTweets = pushTweets
+        this.isLoading = false
       }
     },
     created() {
