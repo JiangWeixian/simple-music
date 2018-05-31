@@ -50,7 +50,7 @@
     name: "fans",
     data() {
       return {
-        isLoading: false,
+        isLoading: true,
         tailIconName: 'more_horiz',
         fromPath: '/account',
         fansData: [1,2,3,4,5,6]
@@ -62,6 +62,7 @@
     methods: {
       _formatFans(fans) {
         this.fansData = fans
+        this.isLoading = false
       },
       _backward() {
         this.$router.push({path: this.fromPath, query: {transition: 'slide-left'}})
