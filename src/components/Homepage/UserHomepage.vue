@@ -1,7 +1,7 @@
 <template>
   <div class="user-homepage">
     <div class="user-homepage-header nav-panel-wrapper" ref="nav">
-      <div class="nav-panel">
+      <div class="nav-panel" v-if="!isLoading">
         <span class="nav-header action-backward" @click="_backward">
           <i class="material-icons md-56 md-light">keyboard_arrow_left</i>
         </span>
@@ -10,8 +10,15 @@
         </div>
         <div class="nav-tail blank"></div>
         <div class="bg" v-show="isCover">
-          <img :src="userInfo.userBgUrl" alt="background">
+          <img v-lazy="bgObj" alt="background">
         </div>
+      </div>
+      <div class="nav-panel loading" v-else>
+        <span class="nav-header action-backward">
+          <i class="material-icons md-56 md-light">keyboard_arrow_left</i>
+        </span>
+        <div class="nav-body panel"></div>
+        <div class="nav-tail blank"></div>
       </div>
     </div>
     <div class="homepage-routerlink" v-show="isShowLinks" :style="routerStyle">
@@ -26,9 +33,10 @@
     </div>
     <div class="user-homepage-body" :class="{'preview': isEndScroll}">
       <section class="homepage-bg" ref="bkg">
-        <div class="bg">
-          <img :src="userInfo.userBgUrl" alt="background">
+        <div class="bg" v-if="!isLoading">
+          <img v-lazy="bgObj" alt="background">
         </div>
+        <div class="img" v-else></div>
       </section>
       <scroll
         :probeType="3"
@@ -37,8 +45,8 @@
         :click="true"
         @scroll="_getCurrentPos"
         class="user-homepage-content">
-        <section class="homepage-accountInfo" ref="account">
-          <div class="account-avatar"><img :src="userInfo.userAvatarUrl" alt="account-avatar"></div>
+        <section class="homepage-accountInfo" v-if="!isLoading" ref="account">
+          <div class="account-avatar"><img v-lazy="userInfo.userAvatarUrl" alt="account-avatar"></div>
           <div class="account-brief">
             <div class="row account-name">
               <h1>{{ userInfo.userName }}</h1>
@@ -62,7 +70,27 @@
             </div>
           </div>
         </section>
-        <section class="homepage-routerlink" ref="links">
+        <section class="homepage-accountInfo loading" v-else ref="account">
+          <div class="account-avatar"></div>
+          <div class="account-brief">
+            <div class="row account-name">
+              <h1 class="tbw-box"></h1>
+            </div>
+            <ul class="row account-detail">
+              <li>
+                <p class="tbw-box"></p>
+                <span class="tbw-box"></span></li>
+              <li>
+                <p class="tbw-box"></p>
+                <span class="tbw-box"></span></li>
+              <li>
+                <p class="tbw-box"></p>
+                <span class="tbw-box"></span></li>
+            </ul>
+            <div class="row account-signature tbw-box"></div>
+          </div>
+        </section>
+        <section class="homepage-routerlink" :class="{ 'loading': isLoading }" ref="links">
           <router-link class="tab-item" tag="div" :to="musicPath">
             <span class="tab-link">音乐</span>
             <span>{{ userInfo.userPlayListNum }}</span>
@@ -103,6 +131,7 @@
     data() {
       return {
         name: 'UserHomepage',
+        isLoading: true,
         fromPath: '/',
         userInfo: {
           level: 9,
@@ -113,7 +142,6 @@
           userTweetsNum: 14,
           userPlayListNum: 41,
           userAvatarUrl: require("../../assets/img/default_avatar.png"),
-          userBgUrl: require("../../assets/img/default_user_bg.jpg")
         },
         // config for scroll
         isListenScroll: true,
@@ -158,6 +186,13 @@
           position: 'fixed',
           zIndex: 1,
           top: `${this.navHeight}px`
+        }
+      },
+      bgObj() {
+        return {
+          src: this.userInfo.userBgUrl,
+          error: require("../../assets/img/default_user_bg.jpg"),
+          loading: require("../../assets/img/default_user_bg.jpg")
         }
       },
       musicPath() {
@@ -211,6 +246,7 @@
           userBgUrl: data.profile.backgroundUrl
         }
         this.userInfo = userInfo
+        this.isLoading = false
       }
     },
     created() {

@@ -32,19 +32,20 @@
       color: $color-icon
 
 .loading-img-collect-item
+  .img-collect-item-header
+    .img
+      width: inherit
+      height: inherit
+      background-color: $color-background
   .img-collect-item-body
     h2
       border-bottom-width: 10px
       border-top-width: 10px
 
 .loading-img-collect-item.fans-img-collect-item
-  height: 140px
   .img-collect-item-header
     .img
-      width: inherit
-      height: inherit
       border-radius: 100%
-      background-color: $color-background
 
 .fans-img-collect-item
   height: 140px
@@ -59,6 +60,7 @@
       object-fit: fill
   .img-collect-item-body
     width: calc(100% - 92px - 24px)
+
 
 .musiclist-img-collect-item
   margin-bottom: 10px
