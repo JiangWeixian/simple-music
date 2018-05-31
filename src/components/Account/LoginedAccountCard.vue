@@ -107,9 +107,9 @@
     },
     created() {
       api.GetUserDetail(this.uId)
-          .then((res) => {
-            this._formatAccountInfo(res.data.profile)
-          })
+        .then((res) => {
+          this._formatAccountInfo(res.data.profile)
+        })
         .catch((error) => {
           console.log(error)
         })

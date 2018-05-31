@@ -33,8 +33,8 @@ Vue.use(VueTouch, {name: 'v-touch'})
 
 Vue.use(VueLazyload, {
   preLoad: 1.3,
-  error: 'https://raw.githubusercontent.com/JiangWeixian/simple-music/dev/src/assets/img/default_unloadimg.png',
-  loading: 'https://raw.githubusercontent.com/JiangWeixian/simple-music/dev/src/assets/img/default_unloadimg.png',
+  error: require('./assets/img/default_bg.png'),
+  loading: require('./assets/img/default_bg.png'),
   attempt: 1
 })
 

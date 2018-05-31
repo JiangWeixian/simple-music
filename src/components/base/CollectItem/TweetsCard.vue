@@ -3,7 +3,7 @@
     <div class="tweets-header">
       <div class="tweets-account-avatar">
         <div class="img">
-          <img :src="data.user.avatarUrl" :alt="data.user.accountName">
+          <img v-lazy="data.user.avatarUrl" :alt="data.user.accountName">
         </div>
       </div>
       <div class="tweets-header-brief">
