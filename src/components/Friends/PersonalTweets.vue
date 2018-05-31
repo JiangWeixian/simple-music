@@ -29,12 +29,19 @@
       class="personal-tweets-content"
       @getCurrentY="_getCurrentY"
       :listen-scroll="true">
-      <li v-for="item in pushTweets"
-          is="TweetsCard"
-          @getTargetInfo="_getTargetInfo"
-          :key="item.tweetsTime"
-          :data="item">
-      </li>
+      <div class="loaded" v-if="!isLoading">
+        <li v-for="item in pushTweets"
+            is="TweetsCard"
+            @getTargetInfo="_getTargetInfo"
+            :key="item.tweetsTime"
+            :data="item">
+        </li>
+      </div>
+      <div class="loading" v-else>
+        <li v-for="item in pushTweets"
+            is="LoadingTweetsCard">
+        </li>
+      </div>
       <div class="blank"></div>
     </scroll>
   </div>
@@ -44,6 +51,7 @@
   import ImgPreViewer from "../base/Viewer/ImgPreViewer";
   import InfCircleLoader from "../base/Loader/InfCircleLoader";
   import TweetsCard from "../base/CollectItem/TweetsCard";
+  import LoadingTweetsCard from "../base/CollectItem/LoadingTweetsCard"
   import Scroll from "../base/Scroll/Scroll";
   import tweets from '../../api/tweets'
   import song from '../../api/song'
@@ -54,15 +62,17 @@
       Scroll,
       TweetsCard,
       InfCircleLoader,
+      LoadingTweetsCard,
       ImgPreViewer},
     name: " PersonalTweets",
     data() {
       return {
         show: false,
+        isLoading: true,
         screenWidth: 0,
         screenHeight: 0,
         scrollY: 0,
-        pushTweets: [],
+        pushTweets: [1,2,3],
         currentMidLineX: 0,
         currentMidLineY: 0,
         currentImgScale: 0.5,
@@ -333,6 +343,7 @@
             })
         })
         this.pushTweets = pushTweets
+        this.isLoading = false
       }
     },
     created() {

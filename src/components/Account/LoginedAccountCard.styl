@@ -1,69 +1,119 @@
 @import '~assets/stylus/variable.styl'
 
+
 .logined-account-card
   display: flex
   flex-direction: column
   padding-bottom: 34px
-.row
-  display: flex
-  justify-content: space-between
-  align-items: center
-  margin-top: 34px
-  .account-brief
+  .row
     display: flex
+    justify-content: space-between
     align-items: center
-    .account-avatar
-      width: 140px
-      height: 140px
-      border-radius: 100%
-      margin: 0 24px 0 36px
-      overflow: hidden
-      img
-        width: inherit
-        height: inherit
-        object-fit: fill
-    .account-name, .account-level
-      height: 46px
-      line-height: 46px
-      display: block
-    .account-name
-      font-size: $font-size-large-xxxll
-    .account-level
-      font-size: $font-size-large-xxx
-      i
-        color: $color-icon
-  .account-action-daily
-    width: 164px
-    margin-right: 36px
-    position: relative
-    .toast-wrapper
-      position: absolute
-      left: -100%
-      bottom: 34px
+    margin-top: 34px
+    .account-brief
       display: flex
-      width: 100%
-      justify-content: center
-  .account-detail
-    display: flex
-    text-align: center
-    li
-      flex-grow: 1
-      width: 188px
-      *
+      align-items: center
+      .account-avatar
+        width: 140px
+        height: 140px
+        border-radius: 100%
+        margin: 0 24px 0 36px
+        overflow: hidden
+      .account-name, .account-level
         height: 46px
         line-height: 46px
-      p
-        font-size: $font-size-large-xxx
-        color: $color-icon
-      span
+        display: block
+      .account-name
         font-size: $font-size-large-xxxll
-  .account-action-modify
-    font-size: $font-size-large-xxx
-    width: 164px
-    text-align: center
-    margin-right: 36px
+      .account-level
+        font-size: $font-size-large-xxx
+        i
+          color: $color-icon
+    .account-action-daily
+      width: 164px
+      margin-right: 36px
+      position: relative
+      .toast-wrapper
+        position: absolute
+        left: -100%
+        bottom: 34px
+        display: flex
+        width: 100%
+        justify-content: center
+    .account-detail
+      display: flex
+      li
+        flex-grow: 1
+        width: 188px
+        display: flex
+        flex-direction: column
+        align-items: center
+        *
+          height: 46px
+          line-height: 46px
+        p
+          font-size: $font-size-large-xxx
+          color: $color-icon
+        span
+          font-size: $font-size-large-xxxll
+    .account-action-modify
+      font-size: $font-size-large-xxx
+      width: 164px
+      text-align: center
+      margin-right: 36px
 
+.logined-account-card
+  .loaded
+    .row
+      .account-brief
+        .account-avatar
+          img
+            width: inherit
+            height: inherit
+            object-fit: fill
+      .account-action-daily
+        .toast-wrapper
+          position: absolute
+          left: -100%
+          bottom: 34px
+          display: flex
+          width: 100%
+          justify-content: center
 
+.logined-account-card
+  .loading
+    .row
+      .account-brief
+        .account-avatar
+          background-color: $color-background
+        .account-level
+        .account-name
+          background-color: $color-background
+          border-color: white
+          border-style: solid
+        .account-name
+          width: 80px
+          height: $font-size-large-xxxll
+          border-top-width: 7px
+          border-bottom-width: 7px
+        .account-level
+          width: 120px
+          height: $font-size-large-xxx
+          border-top-width: 9px
+          border-bottom-width: 9px
+      .account-detail
+        li
+          p
+            width: 52px
+            border-top-width: 10px
+            border-bottom-width: 10px
+          span
+            width: 34px
+            border-top-width: 8px
+            border-bottom-width: 8px
+      .account-action-modify
+        height: 30px
+        background-color: $color-background
 
 .toast-popup-enter-active, .toast-popup-leave-active
   transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);

@@ -97,6 +97,13 @@
     height: 112px;
     width: 100%;
   }
+  .tbw-box {
+    border-color: white;
+    border-style: solid;
+    box-sizing: border-box;
+    display: block;
+    background-color: #eef0f1;
+  }
   .ellipsis {
     overflow: hidden;
     white-space: nowrap;

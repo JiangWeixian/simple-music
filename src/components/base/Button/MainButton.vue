@@ -48,7 +48,7 @@
           return this.isClicked? this.buttonNameList[1]:this.buttonNameList[0]
         },
         buttonClass() {
-          return this.isClicked? `${this.buttonSize}-secondary-button ${this.secondaryColor}`:`${this.buttonSize}-primary-button`
+          return this.isClicked? `${this.buttonSize} secondary-button ${this.secondaryColor}`:`${this.buttonSize} primary-button`
         }
       },
       methods: {
