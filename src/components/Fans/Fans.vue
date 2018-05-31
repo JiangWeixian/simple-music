@@ -12,6 +12,7 @@
       </div>
     </div>
     <scroll
+      :click="true"
       class="fans-content">
       <div class="loaded" v-if="!isLoading">
         <img-collect-item
@@ -53,7 +54,7 @@
         isLoading: true,
         tailIconName: 'more_horiz',
         fromPath: '/account',
-        fansData: [1,2,3,4,5,6]
+        fansData: [1,2,3,4,5,6,7,8]
       }
     },
     computed: {
