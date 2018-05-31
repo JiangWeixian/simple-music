@@ -205,7 +205,7 @@
         return this.scrollY <= -this.maxScrollY? true:false
       },
       isCover() {
-        return this.scrollY < 0? true:false
+        return this.scrollY <= 0? true:false
       },
       isShowLinks() {
         return -this.scrollY > this.maxScrollY? true:false

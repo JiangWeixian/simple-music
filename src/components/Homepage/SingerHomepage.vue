@@ -1,7 +1,7 @@
 <template>
   <div class="singer-homepage">
     <div class="singer-homepage-header nav-panel-wrapper" ref="nav">
-      <div class="nav-panel">
+      <div class="nav-panel" v-if="!isLoading">
         <span class="nav-header action-backward" @click="_backward">
           <i class="material-icons md-56 md-light">keyboard_arrow_left</i>
         </span>
@@ -10,8 +10,15 @@
         </div>
         <div class="nav-tail blank"></div>
         <div class="bg" v-show="isCover">
-          <img :src="singerInfo.picUrl" alt="background">
+          <img v-lazy="bgObj" alt="background">
         </div>
+      </div>
+      <div class="nav-panel loading" v-else>
+        <span class="nav-header action-backward">
+          <i class="material-icons md-56 md-light">keyboard_arrow_left</i>
+        </span>
+        <div class="nav-body panel"></div>
+        <div class="nav-tail blank"></div>
       </div>
     </div>
     <div class="homepage-routerlink" v-show="isShowLinks" :style="routerStyle">
@@ -34,9 +41,10 @@
     </div>
     <div class="singer-homepage-body">
       <section class="homepage-bg" ref="bkg">
-        <div class="bg">
-          <img :src="singerInfo.picUrl" alt="background">
+        <div class="bg" v-if="!isLoading">
+          <img v-lazy="bgObj" alt="background">
         </div>
+        <div class="img" v-else></div>
       </section>
       <scroll
         :probeType="3"
@@ -52,10 +60,15 @@
             :button-name-list="['未收藏', '已收藏']"
             button-size="medium"
             :button-status="singerInfo.followed"
+            v-if="!isLoading"
             secondary-color="white">
           </main-button>
+          <loading-main-button
+            class="collect-btn"
+            v-else>
+          </loading-main-button>
         </section>
-        <section class="homepage-routerlink" ref="links">
+        <section class="homepage-routerlink" :class="{ 'loading': isLoading }" ref="links">
           <router-link class="tab-item" tag="div" :to="hotSongsPath">
             <span class="tab-link">热门</span>
             <span>{{ hotSongs.length }}</span>
@@ -78,6 +91,7 @@
             <keep-alive>
               <router-view
                 :id="id"
+                :is-loading="isLoading"
                 :singer-name="singerInfo.name"
                 :songs="hotSongs">
               </router-view>
@@ -94,17 +108,20 @@
   import song from "../../api/song"
   import Scroll from "../base/Scroll/Scroll"
   import MainButton from "../base/Button/MainButton"
+  import LoadingMainButton from "../base/Button/LoadingMainButton"
 
   export default {
     name: "SingerHomepage",
     components: {
       Scroll,
-      MainButton
+      MainButton,
+      LoadingMainButton
     },
     props: ['id'],
     data() {
       return {
         routerArr: ['SingerHotSongs', 'SingerAlbums', 'SingerMV', 'SingerInfo'],
+        isLoading: true,
         fromPath: '/',
         scrollY: 0,
         singerTop: 0,
@@ -177,11 +194,18 @@
           top: `${this.navHeight}px`
         }
       },
+      bgObj() {
+        return {
+          src: this.singerInfo.picUrl,
+          error: require("../../assets/img/default_user_bg.jpg"),
+          loading: require("../../assets/img/default_user_bg.jpg")
+        }
+      },
       isShowLinks() {
         return -this.scrollY > this.maxScrollY? true:false
       },
       isCover() {
-        return this.scrollY < 0? true:false
+        return this.scrollY <= 0? true:false
       },
       isTitle() {
         return this.scrollY < -this.maxScrollY? true:false
@@ -212,6 +236,7 @@
       _formatBase(data) {
         this.singerInfo = data.artist
         this.hotSongs = data.hotSongs
+        this.isLoading = false
       }
     },
     created() {
