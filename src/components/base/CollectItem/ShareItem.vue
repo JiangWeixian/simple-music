@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="item-title">
-        <p>{{ itemTitle }}</p>
+        <p class="ellipsis-webkit">{{ itemTitle }}</p>
       </div>
     </div>
     <div class="item-tail">
