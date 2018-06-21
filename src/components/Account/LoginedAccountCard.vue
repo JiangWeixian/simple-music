@@ -1,5 +1,6 @@
 <template>
-    <div class="logined-account-card">
+  <div class="logined-account-card">
+    <div class="loaded" v-if="!isLoading">
       <div class="row">
         <div class="account-brief">
           <div class="account-avatar"><img v-lazy="accountAvatarUrl" alt="account-avatar"></div>
@@ -45,20 +46,56 @@
         </div>
       </div>
     </div>
+    <div class="loading" v-else>
+      <div class="row">
+        <div class="account-brief">
+          <div class="account-avatar"></div>
+          <div>
+            <h1 class="account-name"></h1>
+            <span class="account-level"></span>
+          </div>
+        </div>
+        <div class="account-action-daily">
+          <loading-main-button></loading-main-button>
+        </div>
+      </div>
+      <div class="row">
+        <ul class="account-detail">
+          <li>
+            <p class="tbw-box"></p>
+            <span class="tbw-box"></span>
+          </li>
+          <li>
+            <p class="tbw-box"></p>
+            <span class="tbw-box"></span>
+          </li>
+          <li>
+            <p class="tbw-box"></p>
+            <span class="tbw-box"></span>
+          </li>
+        </ul>
+        <div class="account-action-modify">
+          <a href="#"></a>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
   import MainButton from "../base/Button/MainButton";
+  import LoadingMainButton from "../base/Button/LoadingMainButton"
   import Toast from '../base/Toast/Toast'
   import { mapGetters } from 'vuex'
   import api from '../../api/login'
 
   export default {
-    components: {MainButton, Toast},
+    components: {MainButton, Toast, LoadingMainButton},
     name: "logined-account-card",
     data() {
       return {
-        accountAvatarUrl: require('../../assets/img/default_avatar.png'),
+        isLoading: true,
+        accountAvatarUrl: '',
         accountName: '网易云音乐用户',
         accountLevel: '9',
         accountFans: '0',
@@ -87,6 +124,8 @@
         this.accountFans = profile.followeds
         this.accountFollowers = profile.follows
         this.accountName = profile.nickname
+        this.isLoading = false
+        this.$emit('load', false)
       },
       _signMeIn() {
         api.DailySignMeIn()
@@ -107,9 +146,9 @@
     },
     created() {
       api.GetUserDetail(this.uId)
-          .then((res) => {
-            this._formatAccountInfo(res.data.profile)
-          })
+        .then((res) => {
+          this._formatAccountInfo(res.data.profile)
+        })
         .catch((error) => {
           console.log(error)
         })

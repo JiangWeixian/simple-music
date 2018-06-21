@@ -9,7 +9,7 @@
   .img-collect-item-body
     align-self: stretch
     overflow: hidden
-    text-indent: 28px
+    padding-left: 28px
     display: flex
     flex-direction: column
     justify-content: center
@@ -31,6 +31,22 @@
     .material-icons
       color: $color-icon
 
+.loading-img-collect-item
+  .img-collect-item-header
+    .img
+      width: inherit
+      height: inherit
+      background-color: $color-background
+  .img-collect-item-body
+    h2
+      border-bottom-width: 10px
+      border-top-width: 10px
+
+.loading-img-collect-item.fans-img-collect-item
+  .img-collect-item-header
+    .img
+      border-radius: 100%
+
 .fans-img-collect-item
   height: 140px
   .img-collect-item-header
@@ -45,6 +61,10 @@
   .img-collect-item-body
     width: calc(100% - 92px - 24px)
 
+.loading-img-collect-item.musiclist-img-collect-item
+  .img-collect-item-header
+    background-color: $color-background
+
 .musiclist-img-collect-item
   margin-bottom: 10px
   .img-collect-item-header
@@ -55,6 +75,10 @@
       height: inherit
   .img-collect-item-body
     width: calc(100% - 118px)
+
+.loading-img-collect-item.mv-img-collect-item
+  .img-collect-item-header
+    background-color: $color-background
 
 .mv-img-collect-item
   margin: 0 0 10px 10px

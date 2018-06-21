@@ -23,16 +23,16 @@
         color: $color-theme-primary
     .music-collect-item-body
       width: 100%
-      display: flex
-      flex-direction: column
-      justify-content: center
-      text-indent: 20px
+      margin-left: 20px
       p
         font-size: $font-size-large-xxxll
-        padding-bottom: 10px
+        line-height 50px
+        height 50px
       span
         font-size: $font-size-large-xx
-        text-align: left 
+        line-height 40px
+        height 40px
+        text-align: left
         max-width: 50%
       .sub-title
         display: flex
@@ -45,6 +45,34 @@
     justify-content: center
     align-items: center
     color: $color-icon
-    .material-icons
-      padding-right: 10px
+    i
+      margin-right: 10px
       text-align: center
+
+.loading-music-collect-item.music-collect-item
+  .music-collect-item-wrapper
+    .music-collect-item-header
+      span
+        display: block
+        width: 94px
+        height: 94px
+        background-color: $color-background
+  .music-collect-item-body
+    display: flex
+    flex-direction: column
+    justify-content: center
+    p
+      width: 250px
+      border-top-width: 10px
+      border-bottom-width: 10px
+      background-color: $color-background
+    .sub-title
+      height 40px
+      border-top-width: 10px
+      border-bottom-width: 10px
+      background-color: $color-background
+  .music-collect-item-tail
+    i
+      width: 48px
+      height: 48px
+      background-color: $color-background

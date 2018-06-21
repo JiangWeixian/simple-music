@@ -1,10 +1,10 @@
 <template>
   <div class="user-homepage-music">
     <div class="panel created-playlist-nav" ref="panel">
-      <p>歌单<span>({{ createdPlaylistNum }})</span></p>
-      <p>共被收藏<span>{{ subscribedCount }}次</span></p>
+      <p v-if="!isLoading">歌单<span>({{ createdPlaylistNum }})</span></p>
+      <p v-if="!isLoading">共被收藏<span>{{ subscribedCount }}次</span></p>
     </div>
-    <section class="playlists created-playlist" ref="createdPlaylist">
+    <section class="playlists created-playlist" ref="createdPlaylist" v-if="!isLoading">
       <li
         v-for="item in createdPlaylists"
         is="ImgCollectItem"
@@ -15,10 +15,17 @@
         item-type="musiclist">
       </li>
     </section>
+    <section v-else>
+      <li
+        v-for="item in createdPlaylists"
+        is="LoadingImgCollectItem"
+        item-type="musiclist">
+      </li>
+    </section>
     <div class="panel sub-playlist-nav" v-show="subPlaylistNum != 0">
-      <p>收藏的歌单<span>({{ subPlaylistNum }})</span></p>
+      <p v-if="!isLoading">收藏的歌单<span>({{ subPlaylistNum }})</span></p>
     </div>
-    <section class="playlists sub-playlist">
+    <section class="playlists sub-playlist" v-if="!isLoading">
       <li
         v-for="item in subPlaylists"
         is="ImgCollectItem"
@@ -29,19 +36,27 @@
         item-type="musiclist">
       </li>
     </section>
-    <div class="blank"></div>
+    <section v-else>
+      <li
+        v-for="item in subPlaylists"
+        is="LoadingImgCollectItem"
+        item-type="musiclist">
+      </li>
+    </section>
   </div>
 </template>
 
 <script>
   import login from "../../api/login"
   import ImgCollectItem from "../base/CollectItem/ImgCollectItem"
+  import LoadingImgCollectItem from "../base/CollectItem/LoadingImgCollectItem"
 
   export default {
     name: "UserHomepageMusic",
     data() {
       return {
         id: 0,
+        isLoading: true,
         name: "UserHomepageMusic",
         panelHeight: 25,
         createdPlaylistHeight: 0,
@@ -50,7 +65,14 @@
       }
     },
     components: {
-      ImgCollectItem
+      ImgCollectItem,
+      LoadingImgCollectItem
+    },
+    props: {
+      parentLoad: {
+        type: Boolean,
+        default: true
+      }
     },
     watch: {
       '$route'(to, from) {
@@ -86,7 +108,7 @@
       subPlaylists() {
         return this.subPlaylistNum > 0?
           this.playlists.slice(this.createdPlaylistNum, this.playlists.length)
-          : []
+          : [1,2,3,4]
       },
       subscribedCount() {
         let subscribedCount = 0
@@ -116,6 +138,7 @@
       _formatPlaylist(data) {
         this.officalPlaylistCount = data.createdPlaylistNum
         this.playlists = data.playlist
+        this.isLoading = false
       }
     },
     created() {

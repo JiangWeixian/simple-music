@@ -1,7 +1,7 @@
 <template>
-  <div class="singer-info">
+  <div class="singer-info" :class="{'loading': isLoading}">
     <div class="info">
-      <h2>相似歌手</h2>
+      <h2><span>相似歌手</span></h2>
       <div class="container">
         <swiper :options="swiperOption">
           <swiper-slide v-for="(slide, index) in simiSingers" :key="index">
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="info">
-      <h2>{{ singerName }}简介</h2>
+      <h2><span>{{ singerName }}简介</span></h2>
       <pre>{{ brief }}</pre>
     </div>
     <div
@@ -41,6 +41,7 @@
     data() {
       return {
         info: [],
+        isLoading: true,
         brief: "",
         simiSingers: [1, 2, 3],
         swiperOption: {
@@ -73,6 +74,7 @@
       },
       _formatSimiSinger(data) {
         this.simiSingers = data
+        this.isLoading = false
       },
       _linkSinger(id) {
         this.$router.push({path: `/singer/${id}`, query: {transition: 'slide-right'}})

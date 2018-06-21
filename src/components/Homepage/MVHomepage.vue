@@ -2,7 +2,7 @@
   <div class="mv-homepage">
     <div class="mv-homepage-header nav-panel-wrapper">
       <div class="nav-panel">
-        <span class="nav-header action-backward">
+        <span class="nav-header action-backward" @click="_backward">
           <i class="material-icons md-56 md-light">keyboard_arrow_left</i>
         </span>
         <div class="nav-body panel">
@@ -19,7 +19,7 @@
         :poster-src="mvInfo.cover">
       </video-pre-viewer>
     </div>
-    <ul class="mvh-actions" :style="mvhAStyle" ref="mvhActions">
+    <ul class="mvh-actions" v-show="isShowActions" :style="mvhAStyle">
       <li class="mvh-mv-suggestions-btn" @click="_scrollTo(isMv, 'mvSuggestion')">
         <i class="material-icons md-48">ondemand_video</i>
         <span>{{ simiMVInfo.length }}</span>
@@ -38,81 +38,152 @@
         :probeType="3"
         :scrollToPosY="scrollToPosY"
         :listenScroll="isListenScroll"
+        :click="true"
         ref="scroll"
         @scroll="_getCurrentPos"
         class="mv-content">
-        <div class="mv-panel" ref="mvPanel">
-          <div class="mv-title" @click="_toggleDesc">
-            <p>{{ mvBriefDesc }}</p>
-            <i class="material-icons md-36 more" v-if="isMore">arrow_drop_up</i>
-            <i class="material-icons md-36 more" v-else>arrow_drop_down</i>
+        <div v-if="!isLoading">
+          <div class="mv-panel" ref="mvPanel">
+            <div class="mv-title" @click="_toggleDesc">
+              <p>{{ mvBriefDesc }}</p>
+              <i class="material-icons md-36 more" v-if="isMore">arrow_drop_up</i>
+              <i class="material-icons md-36 more" v-else>arrow_drop_down</i>
+            </div>
+            <ul class="mv-creators">
+              <p class="mv-creator">歌手：</p>
+              <li v-for="item in mvInfo.artists">
+                <p @click="_linkSinger(item.id)">{{ item.name }}<span>/</span></p>
+              </li>
+            </ul>
+            <ul class="mv-info">
+              <li class="mv-publishtime">发行：{{ mvInfo.publishTime }}</li>
+              <li class="mv-playcount">播放：{{ mvInfo.playCount | roundOht }}</li>
+            </ul>
+            <ul class="mv-actions">
+              <li class="mv-likeCount">
+                <i class="material-icons md-36">thumb_up</i>
+                <span class="thumbup-num">{{ mvInfo.likeCount | roundOht }}</span>
+              </li>
+              <li class="mv-subCount">
+                <i class="material-icons md-36">add_box</i>
+                <span class="sub-num">{{ mvInfo.subCount | roundOht }}</span>
+              </li>
+              <li class="mv-shareCount">
+                <i class="material-icons md-36">share</i>
+                <span class="share-num">{{ mvInfo.shareCount | roundOht }}</span>
+              </li>
+            </ul>
+            <p class="mv-desc" v-show="isMore">{{ mvInfo.desc }}</p>
           </div>
-          <ul class="mv-creators">
-            <p class="mv-creator">歌手：</p>
-            <li v-for="item in mvInfo.artists">
-              <p @click="_linkSinger(item.id)">{{ item.name }}<span>/</span></p>
+          <ul class="mvh-actions" ref="mvhActions">
+            <li class="mvh-mv-suggestions-btn" @click="_scrollTo(isMv, 'mvSuggestion')">
+              <i class="material-icons md-48">ondemand_video</i>
+              <span>{{ simiMVInfo.length }}</span>
+            </li>
+            <li class="mvh-music-suggestions-btn" @click="_scrollTo(isSong, 'songSuggestion')">
+              <i class="material-icons md-48">music_note</i>
+              <span>{{ songsCount }}</span>
+            </li>
+            <li class="mvh-commit-btn" @click="_scrollTo(isComment, 'comments')">
+              <i class="material-icons md-48">chat</i>
+              <span>{{ totalCommentCount | roundOht }}</span>
             </li>
           </ul>
-          <ul class="mv-info">
-            <li class="mv-publishtime">发行：{{ mvInfo.publishTime }}</li>
-            <li class="mv-playcount">播放：{{ mvInfo.playCount | roundOht }}</li>
+          <div class="mv-suggestions" v-show="isMv" ref="mvSuggestion">
+            <div class="panel">
+              <p>相似MV</p>
+            </div>
+            <img-collect-item
+              v-for="item in simiMVInfo"
+              @getClickStatus="_linkMv(item.id)"
+              :key="item.id"
+              :img-url="item.cover"
+              :item-badge="item.playCount"
+              :item-name="item.name"
+              :item-intro="`@${item.artistName}`"
+              item-type="mv">
+            </img-collect-item>
+          </div>
+          <div class="music-suggestions" v-show="isSong" ref="songSuggestion">
+            <div class="panel">
+              <p>相关音乐</p>
+            </div>
+            <music-collect-item
+              :need-index="false"
+              :need-mv="true"
+              :mv="songInfo.mv"
+              :song="songInfo.id"
+              :artists="songInfo.ar"
+              :album="songInfo.al"
+              :name="songInfo.name">
+            </music-collect-item>
+          </div>
+          <div class="commits-content" v-show="isComment" ref="comments">
+            <div class="panel">
+              <p>全部评论</p>
+            </div>
+            <comment-card
+              v-for="item in comments"
+              :key="item.id"
+              :comment-info="item">
+            </comment-card>
+          </div>
+          <div class="blank" slot="pullup"></div>
+        </div>
+        <div class="loading" v-else>
+          <div class="mv-panel">
+            <div class="mv-title">
+              <p class="tbw-box"></p>
+              <i></i>
+            </div>
+            <ul class="mv-creators">
+              <p class="mv-creator tbw-box"></p>
+              <li class="tbw-box"></li>
+            </ul>
+            <ul class="mv-info">
+              <li class="mv-publishtime tbw-box"></li>
+              <li class="mv-playcount tbw-box"></li>
+            </ul>
+            <ul class="mv-actions">
+              <li class="mv-likeCount tbw-box">
+              </li>
+              <li class="mv-subCount tbw-box">
+              </li>
+              <li class="mv-shareCount tbw-box">
+              </li>
+            </ul>
+          </div>
+          <ul class="mvh-actions" ref="mvhActions">
+            <li><i class="tbw-box"></i><span class="tbw-box"></span></li>
+            <li><i class="tbw-box"></i><span class="tbw-box"></span></li>
+            <li><i class="tbw-box"></i><span class="tbw-box"></span></li>
           </ul>
-          <ul class="mv-actions">
-            <li class="mv-likeCount">
-              <i class="material-icons md-36">thumb_up</i>
-              <span class="thumbup-num">{{ mvInfo.likeCount | roundOht }}</span>
-            </li>
-            <li class="mv-subCount">
-              <i class="material-icons md-36">add_box</i>
-              <span class="sub-num">{{ mvInfo.subCount | roundOht }}</span>
-            </li>
-            <li class="mv-shareCount">
-              <i class="material-icons md-36">share</i>
-              <span class="share-num">{{ mvInfo.shareCount | roundOht }}</span>
-            </li>
-          </ul>
-          <p class="mv-desc" v-show="isMore">{{ mvInfo.desc }}</p>
-        </div>
-        <div class="mv-suggestions" v-show="isMv" ref="mvSuggestion">
-          <div class="panel">
-            <p>相似MV</p>
+          <div class="mv-suggestions">
+            <div class="panel">
+              <p></p>
+            </div>
+            <loading-img-collect-item
+              v-for="item in simiMVInfo"
+              item-type="mv">
+            </loading-img-collect-item>
           </div>
-          <img-collect-item
-            v-for="item in simiMVInfo"
-            @getClickStatus="_linkMv(item.id)"
-            :key="item.id"
-            :img-url="item.cover"
-            :item-badge="item.playCount"
-            :item-name="item.name"
-            :item-intro="`@${item.artistName}`"
-            item-type="mv">
-          </img-collect-item>
-        </div>
-        <div class="music-suggestions" v-show="isSong" ref="songSuggestion">
-          <div class="panel">
-            <p>相关音乐</p>
+          <div class="music-suggestions">
+            <div class="panel">
+              <p></p>
+            </div>
+            <loading-music-collect-item
+              :need-index="false">
+            </loading-music-collect-item>
           </div>
-          <music-collect-item
-            :need-index="false"
-            :need-mv="true"
-            :mv="songInfo.mv"
-            :song="songInfo.id"
-            :artists="songInfo.ar"
-            :album="songInfo.al"
-            :name="songInfo.name">
-          </music-collect-item>
-        </div>
-        <div class="commits-content" v-show="isComment" ref="comments">
-          <div class="panel">
-            <p>全部评论</p>
+          <div class="commits-content" v-show="isComment" ref="comments">
+            <div class="panel">
+              <p></p>
+            </div>
+            <loading-comment-card
+              v-for="item in comments">
+            </loading-comment-card>
           </div>
-          <comment-card
-            v-for="item in comments"
-            :key="item.id"
-            :comment-info="item">
-          </comment-card>
         </div>
-        <div class="blank" slot="pullup"></div>
       </scroll>
     </section>
   </div>
@@ -121,8 +192,11 @@
 <script>
   import Scroll from "../base/Scroll/Scroll"
   import ImgCollectItem from "../base/CollectItem/ImgCollectItem"
+  import LoadingImgCollectItem from "../base/CollectItem/LoadingImgCollectItem"
   import MusicCollectItem from "../base/CollectItem/MusicCollectItem"
+  import LoadingMusicCollectItem from "../base/CollectItem/LoadingMusicCollectItem"
   import CommentCard from "../base/CollectItem/CommentCard"
+  import LoadingCommentCard from "../base/CollectItem/LoadingCommetCard"
   import VideoPreViewer from "../base/Viewer/VideoPreViewer"
   import song from "../../api/song"
 
@@ -131,14 +205,22 @@
     components: {
       Scroll,
       ImgCollectItem,
+      LoadingImgCollectItem,
+      LoadingMusicCollectItem,
       MusicCollectItem,
       VideoPreViewer,
-      CommentCard
+      CommentCard,
+      LoadingCommentCard
     },
     props: ['vid', 'sid'],
     data() {
       return {
         name: 'MVHomepage',
+        isMvLoad: true,
+        isSimiMVLoad: true,
+        isSongLoad: true,
+        isCommentsLoad: true,
+        fromPath: '/',
         isMore: false,
         videoType: 'video/mp4',
         isListenScroll: true,
@@ -151,8 +233,7 @@
             noMore: '没有更多数据'
           }
         },
-        mvPanelHeight: 135,
-        mvWrapperHeight: 210,
+        mvWrapperHeight: 125,
         mvWrapperWidth: 375,
         mvInfo: {},
         simiMVInfo: [
@@ -243,7 +324,7 @@
           t:0,
           v:31,
         },
-        comments: [],
+        comments: [1,2,3],
         //config for comments
         limit: 100,
         pageLimit: 100,
@@ -253,6 +334,7 @@
     },
     watch: {
       '$route'(to, from) {
+        this.fromPath = from.path
         if (this._filter(to)) {
           let vid = to.query['vid']
             ,sid = to.query['sid']
@@ -280,6 +362,9 @@
       }
     },
     computed: {
+      isLoading() {
+        return this.isMvLoad || this.isSimiMVLoad || this.isSongLoad || this.isCommentsLoad
+      },
       isSong() {
         return !!this.sid
       },
@@ -289,22 +374,20 @@
       isComment() {
         return !!this.comments.length
       },
+      isShowActions() {
+        return -this.scrollY > this.mvPanelHeight? true:false
+      },
       songsCount() {
         return this.isSong? 1:0
       },
+      mvPanelHeight() {
+        return (135/375)*this.mvWrapperWidth
+      },
       mvhAStyle() {
-        if (-this.scrollY > this.mvPanelHeight) {
-          return {
-            position: 'absolute',
-            zIndex: 3,
-            top: `${this.mvWrapperHeight - 1}px`,
-            left: 0
-          }
-        }
         return {
           position: 'absolute',
           zIndex: 3,
-          top: `${this.scrollY + this.mvPanelHeight + this.mvWrapperHeight}px`,
+          top: `${this.mvWrapperHeight - 1}px`,
           left: 0
         }
       },
@@ -333,13 +416,10 @@
         }
       }
     },
-    mounted() {
-      this.$nextTick(() => {
-        // this.mvPanelHeight = this.$refs.mvPanel.offsetHeight
-        // this.mvWrapperHeight = this.$refs.mvWrapper.offsetHeight
-      })
-    },
     methods: {
+      _backward() {
+        this.$router.push({ path: this.fromPath, query: {transition: 'slide-left'}})
+      },
       _toggleDesc() {
         this.isMore = !this.isMore
         this.$nextTick(() => {
@@ -382,16 +462,20 @@
       _formatMV(data) {
         this.mvInfo = data
         this.totalCommentCount = data.commentCount
+        this.isMvLoad = false
       },
       _formatSimiMv(data) {
         this.simiMVInfo = data
+        this.isSimiMVLoad = false
       },
       _formatSong(data) {
         this.songInfo = data[0]
+        this.isSongLoad = false
       },
       _formatComments(data) {
         this.comments = this.comments.concat(data)
         this.currentCommentsCount += data.length
+        this.isCommentsLoad = false
       }
     },
     created() {
@@ -410,6 +494,9 @@
             console.log(res)
             this._formatSong(res.data.songs)
           })
+      }
+      else {
+        this.isSongLoad = false
       }
       song.GetMvComments(this.vid)
         .then((res) => {

@@ -24,7 +24,8 @@
     name: "MusicCollectItem",
     data() {
       return {
-        isPlay: false
+        isPlay: false,
+        isLoading: true
       }
     },
     props: {

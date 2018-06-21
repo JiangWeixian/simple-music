@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="item-title">
-        <p>{{ itemTitle }}</p>
+        <p class="ellipsis-webkit">{{ itemTitle }}</p>
       </div>
     </div>
     <div class="item-tail">
@@ -37,7 +37,7 @@
       props: {
         avatarUrl: {
           type: String,
-          default: 'https://raw.githubusercontent.com/JiangWeixian/simple-music/dev/src/assets/img/default_shareitem_avatar.png'
+          default: require('../../../assets/img/default_shareitem_avatar.png')
         },
         itemType: {
           type: String,
@@ -61,8 +61,8 @@
         imgObj() {
           return {
             src: this.avatarUrl,
-            error: 'https://raw.githubusercontent.com/JiangWeixian/simple-music/dev/src/assets/img/default_shareitem_avatar.png',
-            loading: 'https://raw.githubusercontent.com/JiangWeixian/simple-music/dev/src/assets/img/default_shareitem_avatar.png'
+            error: require('../../../assets/img/default_shareitem_avatar.png'),
+            loading: require('../../../assets/img/default_shareitem_avatar.png')
           }
         }
       },

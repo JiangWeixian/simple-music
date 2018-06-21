@@ -1,27 +1,39 @@
 <template>
   <div class="singer-hotsongs">
-    <div class="play-all">
+    <div class="play-all" v-if="!isLoading">
       <i class="material-icons md-56">play_arrow</i>
       <p>播放全部</p>
     </div>
-    <music-collect-item
-      v-for="item in sortedSongs"
-      :key="item.id"
-      :need-index="true"
-      :need-mv="true"
-      :mv="item.mv"
-      :song="item.id"
-      :index="item.index"
-      :artists="item.ar"
-      :album="item.al"
-      :name="item.name">
-    </music-collect-item>
+    <div class="play-all loading" v-else>
+      <i></i>
+      <p></p>
+    </div>
+    <div class="loaded" v-if="!isLoading">
+      <music-collect-item
+        v-for="item in sortedSongs"
+        :key="item.id"
+        :need-index="true"
+        :need-mv="true"
+        :mv="item.mv"
+        :song="item.id"
+        :index="item.index"
+        :artists="item.ar"
+        :album="item.al"
+        :name="item.name">
+      </music-collect-item>
+    </div>
+    <div class="loading" v-else>
+      <loading-music-collect-item
+        v-for="item in sortedSongs"
+        :need-index="true">
+      </loading-music-collect-item>
+    </div>
   </div>
 </template>
 
 <script>
-  import CollectItem from "../base/CollectItem/CollectItem"
   import MusicCollectItem from "../base/CollectItem/MusicCollectItem"
+  import LoadingMusicCollectItem from "../base/CollectItem/LoadingMusicCollectItem"
 
   export default {
     name: "SingerHotSongs",
@@ -29,15 +41,19 @@
       songs: {
         type: Array,
         required: true
+      },
+      isLoading: {
+        type: Boolean,
+        default: true
       }
     },
     components: {
-      CollectItem,
-      MusicCollectItem
+      MusicCollectItem,
+      LoadingMusicCollectItem
     },
     computed: {
       sortedSongs() {
-        return this.songs.map((item, index) => {
+        return this.isLoading? [1,2,3,4,5] : this.songs.map((item, index) => {
           item.index = index + 1
           return item
         })

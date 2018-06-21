@@ -12,7 +12,9 @@
       </div>
     </div>
     <scroll
+      :click="true"
       class="fans-content">
+      <div class="loaded" v-if="!isLoading">
         <img-collect-item
           v-for="item in fansData"
           @getClickStatus="_link(item.userId)"
@@ -22,12 +24,20 @@
           :item-intro="item.signature"
           item-type="fans">
         </img-collect-item>
+      </div>
+      <div class="loading" v-else>
+        <loading-img-collect-item
+          v-for="item in fansData"
+          item-type="fans">
+        </loading-img-collect-item>
+      </div>
     </scroll>
   </div>
 </template>
 
 <script>
   import ImgCollectItem from "../base/CollectItem/ImgCollectItem";
+  import LoadingImgCollectItem from "../base/CollectItem/LoadingImgCollectItem";
   import Scroll from "../base/Scroll/Scroll"
   import api from '../../api/login'
   import { mapGetters } from 'vuex'
@@ -35,14 +45,16 @@
   export default {
     components: {
       ImgCollectItem,
+      LoadingImgCollectItem,
       Scroll
     },
     name: "fans",
     data() {
       return {
+        isLoading: true,
         tailIconName: 'more_horiz',
         fromPath: '/account',
-        fansData: []
+        fansData: [1,2,3,4,5,6,7,8]
       }
     },
     computed: {
@@ -51,6 +63,7 @@
     methods: {
       _formatFans(fans) {
         this.fansData = fans
+        this.isLoading = false
       },
       _backward() {
         this.$router.push({path: this.fromPath, query: {transition: 'slide-left'}})

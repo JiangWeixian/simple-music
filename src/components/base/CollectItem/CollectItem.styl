@@ -1,7 +1,6 @@
 @import "~assets/stylus/variable.styl"
 
 .collect-item
-.icon-collect-item
   display: flex
   flex-wrap: nowrap
   width: calc(100% - 36px)
@@ -21,26 +20,46 @@
     color: $color-icon
     text-align: left
   .collect-item-header
-    height: inherit
     width: 56px
   .collect-item-body
     display: flex
     line-height: inherit
     height: inherit
     justify-content: space-between
-    width: 100%
-    align-self: stretch
+    align-items: center
+    width: 646px
+    box-sizing: border-box
     color: $color-text
-    text-indent: 5px
+    padding-left: 15px
     .badge
       color: $color-icon
       font-size: $font-size-large-xxx
   .collect-item-tail
     height: inherit
-    padding-right: 20px
+    width: 48px
+    margin-right: 20px
+
+.loading-collect-item.icon-collect-item
+  .collect-item-header
+    height: 56px
+    width: 56px
+    background-color: $color-background
+  .collect-item-body
+    p
+      height: $font-size-large-xxxlll
+      width: 340px
+      background-color: $color-background
+  .collect-item-tail
+    background-color: $color-background
+    height: 48px
+
+
+.icon-collect-item
+  .collect-item-header
+    height: inherit
+    width: 56px
+
+
 .text-collect-item
   .collect-item-header
     display: none
-  .collect-item-body
-    width: 100%
-    align-self: stretch

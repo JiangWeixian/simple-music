@@ -23,6 +23,22 @@
      white-space:pre-wrap;
      word-wrap:break-word;
 
+.singer-info.loading
+  .info
+    h2
+      span
+        min-width: 100px
+        height: $font-size-large-xxx
+        color: $color-background
+        background-color: $color-background
+      &::before
+        background-color: $color-background
+    pre
+      color: $color-background
+      margin: 0 20px
+      background-color: $color-background
+
+
 .container
   .simisinger
     display: flex
@@ -39,7 +55,14 @@
         object-fit: fill
     .singer-name
       width: 140px
-      padding-top: 10px
+      margin-top: 10px
       overflow: hidden
       text-overflow: ellipsis
       white-space: nowrap
+
+.singer-info.loading
+  .info
+    .container
+      .singer-name
+        background-color: $color-background
+        color: $color-background

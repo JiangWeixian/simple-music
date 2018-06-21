@@ -3,7 +3,7 @@
     <div class="comment-header">
       <div class="header-innerwrapper" @click="_linkUser(commentInfo.user.userId)">
         <div class="header-avatar">
-          <img :src="commentInfo.user.avatarUrl" :alt="commentInfo.user.nickname">
+          <img v-lazy="commentInfo.user.avatarUrl" :alt="commentInfo.user.nickname">
         </div>
         <div class="header-body">
           <p>{{ commentInfo.user.nickname }}</p>

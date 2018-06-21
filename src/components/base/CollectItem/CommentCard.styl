@@ -37,12 +37,12 @@
       color: $color-icon
       font-size: $font-size-large-xxx
       span
-      .material-icons
+      i
         vertical-align: bottom
       span
         display: block
         vertical-align: bottom
-      .material-icons
+      i
         margin-left: 10px
   .comment-body.border
     border-bottom: 1px solid $color-background
@@ -61,3 +61,28 @@
       p
         span
           color: $color-singer
+
+.loading-comment-card.comment-card
+  .comment-header
+    .header-innerwrapper
+      .header-avatar
+        background-color: $color-background
+      .header-body
+        margin-left: 20px
+        p:nth-child(1)
+          width: 400px
+          height: $font-size-large-xxxl
+        p:nth-child(2)
+          width: 100px
+          height: $font-size-large-x
+    .header-tail
+      span
+      i
+        width: 36px
+        height: 36px
+        background-color: $color-background
+  .comment-body
+    p.content
+      width: 100%
+      height: 200px
+      background-color: $color-background

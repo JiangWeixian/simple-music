@@ -2,34 +2,40 @@
 
 .button
   width 100%
-  background-color: $color-theme-primary
+  height: 70px
   color: white
   text-align: center
   display block
-.medium-secondary-button
-.medium-primary-button
+
+.button.primary-button
+  background-color: $color-theme-primary
+
+.loading-main-button
+  .button
+    height: 70px
+    background-color: $color-background
+
+.medium
   font-size: $font-size-large-xxxl
   height: 70px
   line-height: 70px
-.medium-secondary-button
+.medium.secondary-button
   color: $color-text
 
 
-.large-secondary-button
-.large-primary-button
+.large
   height: 94px
   line-height: 94px
   font-size: $font-size-large-xxxll
-.large-secondary-button
+.large.secondary-button
   color $color-text
 
 
-.small-secondary-button
-.small-primary-button
+.small
   height: 60px
   line-height: 60px
   font-size: $font-size-large-xxxl
-.small-secondary-button
+.small.secondary-button
   color $color-text
 
 .white

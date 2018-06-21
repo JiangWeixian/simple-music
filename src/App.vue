@@ -97,10 +97,24 @@
     height: 112px;
     width: 100%;
   }
+  .tbw-box {
+    border-color: white;
+    border-style: solid;
+    box-sizing: border-box;
+    display: block;
+    background-color: #eef0f1;
+  }
   .ellipsis {
-    overflow: hidden; 
-    white-space: nowrap; 
+    overflow: hidden;
+    white-space: nowrap;
     text-overflow: ellipsis;
+  }
+  .ellipsis-webkit {
+    display: -webkit-box;
+    width: 100%;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   .pullup-enter-active, .pullup-leave-active {
     transition: all 0.4s

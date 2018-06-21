@@ -3,7 +3,7 @@
     <div class="tweets-header">
       <div class="tweets-account-avatar">
         <div class="img">
-          <img :src="data.user.avatarUrl" :alt="data.user.accountName">
+          <img v-lazy="data.user.avatarUrl" :alt="data.user.accountName">
         </div>
       </div>
       <div class="tweets-header-brief">
@@ -61,13 +61,15 @@
         :toggle="true"></flat-button>
       <div class="tweets-body-content">
         <ul class="images" v-if="isImageList">
-          <li v-for="item in data.pics" @click="_emitTargetInfo($event)">
-            <img v-lazy="item.url" :alt="item.index" :index="item.index">
+          <li v-for="item in data.pics" class="needsclick">
+            <v-touch v-on:tap="_emitTargetInfo($event)">
+              <img v-lazy="item.url" :alt="item.index" :index="item.index" class="needsclick">
+            </v-touch>
           </li>
         </ul>
-        <div class="video" v-if="isVideo">
+        <div class="video" v-if="isVideo" ref="video">
           <video-pre-viewer
-            :width="293"
+            :width="videoWidth"
             :height="164"
             :video-type="data.mv.type"
             :video-src="`/mv/url?url=${data.mv.videoUrls['720']}`"
@@ -135,14 +137,15 @@
           isThumbUp: false,
           isLongBrief: false,
           isMore: false,
-          isDropdown: false
+          isDropdown: false,
+          screenWidth: 375
         }
       },
       props: {
         data: {
           type: Object,
           required: true
-        }
+        },
       },
       computed: {
         isImageList() {
@@ -153,6 +156,12 @@
         },
         isShared() {
           return this.data.isShared
+        },
+        longBriefTh() {
+          return (63/375)*this.screenWidth
+        },
+        videoWidth() {
+          return (293/375)*this.screenWidth
         }
       },
       watch: {
@@ -167,8 +176,7 @@
       },
       methods: {
         _emitTargetInfo(e) {
-          let screeWidth = document.documentElement.offsetWidth || document.body.offsetWidth,
-            target = e.target,
+          let target = e.target,
             data = {}
           data = this.isImageList
             ? {index: parseInt(e.target.getAttribute('index')),
@@ -176,11 +184,10 @@
               top: this.$refs.tweetsCard.offsetTop + target.offsetTop,
               width:target.offsetWidth,
               height: target.offsetHeight,
-              scale: target.offsetWidth/screeWidth,
+              scale: target.offsetWidth/this.screenWidth,
               isImageList: this.isImageList,
               imageList: this.data.pics}
             : {}
-          console.log(this.$refs.tweetsCard.offsetTop, target.offsetTop)
           this.$emit('getTargetInfo',data)
         },
         _linkMv(id) {
@@ -209,11 +216,12 @@
       },
       mounted() {
         this.$nextTick(function () {
-          this.isLongBrief = this.$refs.bodyBrief.offsetHeight > 63? true:false
+          this.isLongBrief = this.$refs.bodyBrief.offsetHeight > this.longBriefTh? true:false
         })
       },
       created() {
         this.thumbupNum = this.data.thumbupNum
+        this.screenWidth = document.documentElement.offsetWidth || document.body.offsetWidth
       }
     }
 </script>
