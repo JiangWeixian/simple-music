@@ -24,8 +24,8 @@
           type: String
         },
         badgeNum: {
-          type: Number,
-          default: 5
+          type: String,
+          default: '5'
         },
         itemType: {
           type: String,
