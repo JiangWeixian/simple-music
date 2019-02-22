@@ -8,7 +8,7 @@
   import isBoolean from 'lodash/isBoolean'
   const defaultStatus = false
   export default {
-    name: "flat-button",
+    name: "button",
     data() {
       return {
         isClicked: defaultStatus,
