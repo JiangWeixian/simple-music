@@ -37,6 +37,7 @@
   import LoadingTweetsCard from "../base/CollectItem/LoadingTweetsCard"
   import Scroll from "../base/Scroll/Scroll"
   import ImgPreViewer from "../base/Viewer/ImgPreViewer"
+  import lodashIntersection from 'lodash/intersection'
 
   export default {
     name: "UserHomepageTweets",
@@ -222,7 +223,7 @@
       _formatShared(tweetsBody) {
         let shareKeys = ["event", "song", "playlist", "video", "resource", "program"],
           keys = Object.keys(tweetsBody),
-          intersection = this._.intersection(keys, shareKeys),
+          intersection = lodashIntersection(keys, shareKeys),
           isShared = intersection.length,
           sharedContent = {}
         if (isShared) {

@@ -1,4 +1,4 @@
-import lodash from 'lodash'
+import lodashIntersection from 'lodash/intersection'
 import song from '@/api/song'
 
 var formatter = {
@@ -86,7 +86,7 @@ var formatter = {
   _formatShared(tweetsBody) {
     let shareKeys = ["event", "song", "playlist", "video", "resource", "program"],
       keys = Object.keys(tweetsBody),
-      intersection = lodash.intersection(keys, shareKeys),
+      intersection = lodashIntersection(keys, shareKeys),
       isShared = intersection.length,
       sharedContent = {}
     if (isShared) {
