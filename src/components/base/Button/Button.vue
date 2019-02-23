@@ -1,11 +1,18 @@
 <template>
-  <div class="flat-button" @click="_emitStatus">
-    <span class="button" :class="[buttonClass, buttonSize]">{{ buttonName }}</span>
+  <div
+    data-role="button"
+    @click="_emitStatus"
+    :class="[ buttonClass, size ]"
+  >
+    <slot>
+      <span>
+        按钮
+      </span>
+    </slot>
   </div>
 </template>
 
 <script>
-  import isBoolean from 'lodash/isBoolean'
   const defaultStatus = false
   export default {
     name: "button",
@@ -17,7 +24,8 @@
     props: {
       size: {
         type: String,
-        required: true
+        default: 'medium',
+        required: false
       },
       status: {
         type: Boolean,
@@ -29,36 +37,35 @@
         default: defaultStatus,
         required: false
       },
-      buttonColor: {
-        type: String
+      type: {
+        type: String,
+        default: 'primary',
+        required: false,
       },
     },
     computed: {
       getClickStauts () {
-        return this.status || this.isClicked
-      },
-      buttonName() {
-        return this.isClicked? this.buttonNameList[1]:this.buttonNameList[0]
+        return this.status ||  this.isClicked
       },
       buttonClass() {
-        return `${this.buttonColor}-flat-button`
+        return `btn__${this.type}`
       }
     },
     methods: {
       _handleClick () {
         this.isClicked = !this.isClicked
-        this._emitStatus(this.isClicked)
+        this._emitStatus()
       },
       _emitStatus() {
-        this.$emit('onClick', this.isClicked)
+        this.$emit('onClick', this.getClickStauts)
       }
     },
     created() {
-      this.isClicked = this.buttonStatus
+      this.isClicked = this.defaultStatus
     }
   }
 </script>
 
 <style type="text/stylus" rel="stylesheet/stylus" lang="stylus" scoped>
-  @import './FlatButton.styl'
+  @import './Button.styl'
 </style>

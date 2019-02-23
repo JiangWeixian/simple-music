@@ -174,174 +174,190 @@ const SonglistDetail = (resolve) => {
   })
 }
 
+const routes = [
+  {
+    path: '/',
+    redirect: '/foundmusic/recommend'
+  },
+  {
+    path: '/signup/phonesignup',
+    name: 'phoneSignup',
+    component: PhoneSignUp
+  },
+  {
+    path: '/signup/phonevalidate',
+    name: 'phoneValidate',
+    component: PhoneValidate
+  },
+  {
+    path: '/loginin',
+    name: 'loginin',
+    component: LoginIn
+  },
+  {
+    path: '/loginin/phonelogin',
+    name: 'PhoneLoginIn',
+    component: PhoneLoginIn
+  },
+  {
+    path: '/account',
+    name: 'Account',
+    component: Account,
+    redirect: '/account/loginedaccount',
+    children: [
+      {
+        path: 'unloginaccount',
+        name: 'UnLoginAccount',
+        component: UnLoginAccountCard
+      },
+      {
+        path: 'loginedaccount',
+        name: 'LoginedAccount',
+        component: LoginedAccountCard
+      }
+    ]
+  },
+  {
+    path: '/account/fans',
+    name: 'Fans',
+    component: Fans
+  },
+  {
+    path: '/account/followers',
+    name: 'Followers',
+    component: Followers
+  },
+  {
+    path: '/account/tweets',
+    name: 'PersonalTweets',
+    component: PersonalTweets
+  },
+  {
+    path: '/friends',
+    name: 'Friends',
+    component: Friends,
+    redirect: '/friends/tweets',
+    children: [
+      {
+        path: 'tweets',
+        name: 'Tweets',
+        component: Tweets
+      },
+      {
+        path: 'pushtweets',
+        name: 'PushTweets',
+        component: PushTweets
+      }
+    ]
+  },
+  {
+    path: '/user/:id',
+    component: UserHomepage,
+    name: 'UserHomepage',
+    props: true,
+    redirect: '/user/:id/music',
+    children: [
+      {
+        path: 'music',
+        name: 'UserHomepageMusic',
+        component: UserHomepageMusic
+      },
+      {
+        path: 'tweets',
+        name: 'UserHomepageTweets',
+        component: UserHomepageTweets
+      }
+    ]
+  },
+  {
+    path: '/mvh',
+    component: MVHomepage,
+    name: 'MVHomepage',
+    props: (route) => ({ vid: route.query.vid, sid: route.query.sid })
+  },
+  {
+    path: '/singer/:id',
+    component: SingerHomepage,
+    name: 'SingerHomepage',
+    redirect: '/singer/:id/hotsongs',
+    props: true,
+    children: [
+      {
+        path: 'hotsongs',
+        name: 'SingerHotSongs',
+        component: SingerHotSongs
+      },
+      {
+        path: 'albums',
+        name: 'SingerAlbums',
+        component: SingerAlbums
+      },
+      {
+        path: 'mvs',
+        name: 'SingerMV',
+        component: SingerMV,
+      },
+      {
+        path: 'info',
+        name: 'SingerInfo',
+        component: SingerInfo
+      }
+    ]
+  },
+  {
+    path: '/mine',
+    name: 'Mine',
+    component: Mine,
+    children: [
+      {
+        path: 'songlist/:id',
+        component: SonglistDetail
+      }
+    ]
+  },
+  {
+    path: '/foundmusic',
+    name: 'FoundMusic',
+    component: FoundMusic,
+    children: [
+      {
+        path: 'recommend',
+        name: 'Recommend',
+        component: Recommend
+      },
+      {
+        path: 'songlist',
+        name: 'SongList',
+        component: SongList
+      },
+      {
+        path: 'radio',
+        name: 'Radio',
+        component: Radio
+      },
+      {
+        path: 'rank',
+        name: 'Rank',
+        component: Rank
+      }
+    ]
+  }
+]
+
+if (process.env.NODE_ENV === 'development') {
+  const Example = (resolve) => {
+    import('pages/Example/Example').then((module) => {
+      resolve(module)
+    })
+  }
+  console.info('in dev mode')
+  routes.push({
+    path: '/example',
+    name: 'example',
+    component: Example,
+  })
+}
+
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      redirect: '/foundmusic/recommend'
-    },
-    {
-      path: '/signup/phonesignup',
-      name: 'phoneSignup',
-      component: PhoneSignUp
-    },
-    {
-      path: '/signup/phonevalidate',
-      name: 'phoneValidate',
-      component: PhoneValidate
-    },
-    {
-      path: '/loginin',
-      name: 'loginin',
-      component: LoginIn
-    },
-    {
-      path: '/loginin/phonelogin',
-      name: 'PhoneLoginIn',
-      component: PhoneLoginIn
-    },
-    {
-      path: '/account',
-      name: 'Account',
-      component: Account,
-      redirect: '/account/loginedaccount',
-      children: [
-        {
-          path: 'unloginaccount',
-          name: 'UnLoginAccount',
-          component: UnLoginAccountCard
-        },
-        {
-          path: 'loginedaccount',
-          name: 'LoginedAccount',
-          component: LoginedAccountCard
-        }
-      ]
-    },
-    {
-      path: '/account/fans',
-      name: 'Fans',
-      component: Fans
-    },
-    {
-      path: '/account/followers',
-      name: 'Followers',
-      component: Followers
-    },
-    {
-      path: '/account/tweets',
-      name: 'PersonalTweets',
-      component: PersonalTweets
-    },
-    {
-      path: '/friends',
-      name: 'Friends',
-      component: Friends,
-      redirect: '/friends/tweets',
-      children: [
-        {
-          path: 'tweets',
-          name: 'Tweets',
-          component: Tweets
-        },
-        {
-          path: 'pushtweets',
-          name: 'PushTweets',
-          component: PushTweets
-        }
-      ]
-    },
-    {
-      path: '/user/:id',
-      component: UserHomepage,
-      name: 'UserHomepage',
-      props: true,
-      redirect: '/user/:id/music',
-      children: [
-        {
-          path: 'music',
-          name: 'UserHomepageMusic',
-          component: UserHomepageMusic
-        },
-        {
-          path: 'tweets',
-          name: 'UserHomepageTweets',
-          component: UserHomepageTweets
-        }
-      ]
-    },
-    {
-      path: '/mvh',
-      component: MVHomepage,
-      name: 'MVHomepage',
-      props: (route) => ({ vid: route.query.vid, sid: route.query.sid })
-    },
-    {
-      path: '/singer/:id',
-      component: SingerHomepage,
-      name: 'SingerHomepage',
-      redirect: '/singer/:id/hotsongs',
-      props: true,
-      children: [
-        {
-          path: 'hotsongs',
-          name: 'SingerHotSongs',
-          component: SingerHotSongs
-        },
-        {
-          path: 'albums',
-          name: 'SingerAlbums',
-          component: SingerAlbums
-        },
-        {
-          path: 'mvs',
-          name: 'SingerMV',
-          component: SingerMV,
-        },
-        {
-          path: 'info',
-          name: 'SingerInfo',
-          component: SingerInfo
-        }
-      ]
-    },
-    {
-      path: '/mine',
-      name: 'Mine',
-      component: Mine,
-      children: [
-        {
-          path: 'songlist/:id',
-          component: SonglistDetail
-        }
-      ]
-    },
-    {
-      path: '/foundmusic',
-      name: 'FoundMusic',
-      component: FoundMusic,
-      children: [
-        {
-          path: 'recommend',
-          name: 'Recommend',
-          component: Recommend
-        },
-        {
-          path: 'songlist',
-          name: 'SongList',
-          component: SongList
-        },
-        {
-          path: 'radio',
-          name: 'Radio',
-          component: Radio
-        },
-        {
-          path: 'rank',
-          name: 'Rank',
-          component: Rank
-        }
-      ]
-    }
-  ]
+  routes,
 })

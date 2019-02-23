@@ -3,7 +3,9 @@
   export default {
     name: 'example',
     data () {
-      return {}
+      return {
+        name: 'example'
+      }
     },
     components: {
       Button,
