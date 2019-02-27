@@ -1,5 +1,6 @@
 <script>
-  import Button from '@/components/base/Button/Button.vue'
+  import Button from '@/components/uis/Button/Button.vue'
+  import Unfold from '@/components/uis/Unfold/Unfold.vue'
   export default {
     name: 'example',
     data () {
@@ -9,6 +10,7 @@
     },
     components: {
       Button,
+      Unfold,
     },
   }
 </script>
@@ -18,5 +20,6 @@
     this is example page
     flat-button
     <Button />
+    <Unfold />
   </div>
 </template>

@@ -2,10 +2,10 @@ import lodashIntersection from 'lodash/intersection'
 import song from '@/api/song'
 
 var formatter = {
-  _formatCreator(data) {
+  _formatCreator(data = {}) {
     return {
-      accountName: data.nickname,
-      accountId: data.userId
+      accountName: data ?  data.nickname : '',
+      accountId: data ? data.userId : '',
     }
   },
   _formatTweet(data, type) {
@@ -148,29 +148,31 @@ var formatter = {
     }
   },
   _formatMv(data) {
-    let isMv = !! data.mv,
+    // let isMv = !! data.mv,
+    const isMv = false,
       mv = {}
-    if (isMv) {
-      return song.GetMv(data.mv.id)
-        .then((res) => {
-          let mvData = res.data.data
-          mv = {
-            id: mvData.id,
-            videoUrls: Object.values(mvData.brs),
-            duration: mvData.duration,
-            playCount: mvData.playCount,
-            title: mvData.desc,
-            posterSrc: mvData.cover,
-            artists: mvData.artists,
-            videoName: mvData.name,
-            type: 'video/mp4'
-          }
-          return Promise.resolve({ isMv: isMv, mv: mv })
-        })
-    }
-    else {
-      return Promise.resolve({ isMv: isMv, mv: mv })
-    }
+    return Promise.resolve({ isMv: isMv, mv: mv })
+    // if (isMv) {
+    //   return song.GetMv(data.mv.id)
+    //     .then((res) => {
+    //       let mvData = res.data.data
+    //       mv = {
+    //         id: mvData.id,
+    //         videoUrls: Object.values(mvData.brs),
+    //         duration: mvData.duration,
+    //         playCount: mvData.playCount,
+    //         title: mvData.desc,
+    //         posterSrc: mvData.cover,
+    //         artists: mvData.artists,
+    //         videoName: mvData.name,
+    //         type: 'video/mp4'
+    //       }
+    //       return Promise.resolve({ isMv: isMv, mv: mv })
+    //     })
+    // }
+    // else {
+    //   return Promise.resolve({ isMv: isMv, mv: mv })
+    // }
   },
   _formatEvent(item, callback) {
     let tweetBody = JSON.parse(item.json),
